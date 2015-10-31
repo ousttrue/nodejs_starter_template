@@ -27,3 +27,11 @@ gulp.task("js", function() {
         .pipe(uglify())
         .pipe(gulp.dest("out/js/min"));
 });
+
+//
+// watch
+//
+gulp.task("default", function() {
+    gulp.watch(["src/js/**/*.js","!src/js/min/**/*.js"],["js"]);
+    gulp.watch("src/sass/**/*.scss",["sass"]);
+});
