@@ -16,3 +16,14 @@ gulp.task("sass", function() {
         .pipe(autoprefixer())
         .pipe(gulp.dest("out/css"));
 });
+
+//
+// uglify
+//
+var uglify = require("gulp-uglify");
+ 
+gulp.task("js", function() {
+    gulp.src(["src/js/**/*.js","!src/js/min/**/*.js"])
+        .pipe(uglify())
+        .pipe(gulp.dest("out/js/min"));
+});
