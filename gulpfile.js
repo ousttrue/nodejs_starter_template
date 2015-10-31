@@ -51,7 +51,7 @@ gulp.task("sass", function() {
 var uglify = require("gulp-uglify");
 gulp.task("js", function() {
     gulp.src(["src/js/**/*.js","!src/js/min/**/*.js"])
-        .pipe(plumber())    
+        .pipe($.plumber())    
         .pipe(uglify())
         .pipe(gulp.dest("out/js/min"))
         .pipe(browser.reload({stream:true}))
