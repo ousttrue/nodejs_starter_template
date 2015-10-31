@@ -51,7 +51,12 @@ gulp.task("sass", function() {
 var uglify = require("gulp-uglify");
 gulp.task("js", function() {
     gulp.src(["src/js/**/*.js","!src/js/min/**/*.js"])
-        .pipe($.plumber())    
+        .pipe($.plumber())
+        .pipe($.jslint({           
+        }))
+        .on('error', function (error) {
+            console.error(String(error));
+        })        
         .pipe(uglify())
         .pipe(gulp.dest("out/js/min"))
         .pipe(browser.reload({stream:true}))
