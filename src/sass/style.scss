@@ -1,3 +1,20 @@
+/*
+#overview
+Gulp入門サンプル
+ 
+サンプルファイルです
+*/
+ 
+/*#styleguide
+サンプル見出し1
+ 
+サンプルの見出しスタイル
+hoverすると青く2倍になる
+ 
+```
+<h1>見出し1</h1>
+```
+*/
 h1 {
     color: red;
     transition: 200ms ease-out transform;
