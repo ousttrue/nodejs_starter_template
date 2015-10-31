@@ -1,6 +1,29 @@
 var gulp = require("gulp");
 var $ = require('gulp-load-plugins')();
 
+var config = {
+    sassPath: './src/sass',
+    bowerDir: './bower_components'
+};
+
+//
+// bower
+//
+gulp.task('bower', function() {
+    return $.bower()
+        .pipe(gulp.dest(config.bowerDir))
+});
+
+//
+// icons
+//
+gulp.task('icons', function() {
+    return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
+        .pipe(gulp.dest('out/fonts'))
+        .pipe(browser.reload({stream:true}))
+        ;
+});
+
 //
 // server
 //
