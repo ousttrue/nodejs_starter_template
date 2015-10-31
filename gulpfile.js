@@ -1,4 +1,5 @@
 var gulp = require("gulp");
+var $ = require('gulp-load-plugins')();
 
 //
 // server
@@ -18,6 +19,7 @@ gulp.task("server", function() {
 gulp.task("html", function(){
 
     gulp.src("src/**/*.html")
+        .pipe($.plumber())    
         .pipe(gulp.dest("out"))
         .pipe(browser.reload({stream:true}))
         ;
@@ -32,6 +34,7 @@ var autoprefixer = require("gulp-autoprefixer");
 var frontnote = require("gulp-frontnote");
 gulp.task("sass", function() {
     gulp.src("src/sass/**/*scss")
+        .pipe($.plumber())    
         .pipe(frontnote({
             css: '../out/css/style.css'
         }))
@@ -43,11 +46,12 @@ gulp.task("sass", function() {
 });
 
 //
-// uglify
+// js
 //
 var uglify = require("gulp-uglify");
 gulp.task("js", function() {
     gulp.src(["src/js/**/*.js","!src/js/min/**/*.js"])
+        .pipe(plumber())    
         .pipe(uglify())
         .pipe(gulp.dest("out/js/min"))
         .pipe(browser.reload({stream:true}))

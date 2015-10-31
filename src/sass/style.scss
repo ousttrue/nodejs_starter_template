@@ -15,8 +15,10 @@ hoverすると青く2倍になる
 <h1>見出し1</h1>
 ```
 */
+$color:#aa443f;
+
 h1 {
-    color: green;
+    color: $color;
     transition: 200ms ease-out transform;
     &:hover {
         color: blue;
