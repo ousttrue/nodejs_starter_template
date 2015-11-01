@@ -56,7 +56,6 @@ gulp.task('css', function() {
         .pipe($.sass({
             //outputStyle: 'compressed',
             includePaths: [
-                './src/sass',
                 config.bowerDir + '/bootstrap-sass/assets/stylesheets',
                 config.bowerDir + '/font-awesome/scss',
             ]
