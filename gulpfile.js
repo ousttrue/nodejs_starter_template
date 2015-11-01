@@ -40,8 +40,11 @@ gulp.task('init', ['tsd', 'bower'], function () {
 //
 // server
 //
-gulp.task('nodemon', function (cb) {
-    $.nodemon({ script: config.serverBuildDir + '/app.js' })
+gulp.task('nodemon', ['tsc'], function (cb) {
+    $.nodemon({
+            cwd: config.serverBuildDir,        
+            script: './app.js' 
+        })
         .on('start', function () {
             cb();
         })
