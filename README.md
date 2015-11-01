@@ -8,6 +8,6 @@ node.jsで開発を開始するためのテンプレート
 
 > npm install
 > gulp init
+> gulp build
 > gulp
-> gulp jsserver
 ```

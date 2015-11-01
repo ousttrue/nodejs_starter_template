@@ -1,5 +1,9 @@
 {
   "name": "mytemplate",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ousttrue/nodejs_starter_template.git"
+  },
   "version": "1.0.0",
   "description": "node.js gulp template",
   "main": "build/app.js",
@@ -14,7 +18,9 @@
     "gulp-autoprefixer": "^3.1.0",
     "gulp-bower": "0.0.10",
     "gulp-concat": "^2.6.0",
+    "gulp-filter": "^3.0.1",
     "gulp-frontnote": "^1.0.2",
+    "gulp-if": "^2.0.0",
     "gulp-jslint": "^0.2.2",
     "gulp-load-plugins": "^1.0.0",
     "gulp-nodemon": "^2.0.4",
@@ -24,6 +30,7 @@
     "gulp-tsd": "0.0.4",
     "gulp-typescript": "^2.9.2",
     "gulp-uglify": "^1.4.2",
+    "main-bower-files": "^2.9.0",
     "merge2": "^0.3.6"
   },
   "dependencies": {

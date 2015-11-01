@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var merge = require('merge2');
 var browser = require('browser-sync');
+var mainBowerFiles = require('main-bower-files');
 var $ = require('gulp-load-plugins')();
 
 var config = {
@@ -11,10 +12,6 @@ var config = {
     serverSourceDir: './src/server',
     serverBuildDir: './build',
 };
-var bower_js_list = [
-    config.bowerDir + '/jquery/dist/jquery.js',
-    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js'
-];
 var tsConfig = require(config.serverSourceDir + '/tsconfig.json');
 
 //
@@ -46,7 +43,7 @@ gulp.task('nodemon', ['tsc'], function () {
         script: config.serverBuildDir + '/app.js', 
         //ext: 'js', // 監視するファイルの拡張子
         //ignore: [config.clientBuildDir]
-        env:{
+        env: {
             client_dir: config.clientBuildDir
         }
     })
@@ -54,7 +51,7 @@ gulp.task('nodemon', ['tsc'], function () {
         })
         .on('restart', function () {
             console.log('nodemon restarted!');
-            browser.reload();         
+            browser.reload();
         })
         .on('change')
     ;
@@ -177,10 +174,16 @@ gulp.task('js', function () {
 // bower js
 //
 gulp.task('bowerjs', function () {
-    return gulp.src(bower_js_list)
+    return gulp.src(mainBowerFiles({
+        paths: {
+            bowerDirectory: config.bowerDir,
+            bowerJson: config.clientSourceDir + '/bower.json'
+        }
+    }))
+        .pipe($.filter('*.js'))
+        .pipe($.concat('all.min.js'))
         .pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
         .pipe($.uglify())
-        .pipe($.concat('all.min.js'))
         .pipe(gulp.dest(config.clientBuildDir + '/js'))
         .pipe(browser.reload({ stream: true }))
         ;
@@ -205,7 +208,9 @@ gulp.task('watch', ['server'], function () {
         ['tsc']);
 });
 
-// default
-gulp.task('default', ['tsc',
+// tasks
+gulp.task('build', ['tsc',
     'bowerjs', 'bowercss', 'fonts',
     'html', 'js', 'css']);
+
+gulp.task('default', ['build', 'watch']);

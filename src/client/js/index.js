@@ -1,10 +1,28 @@
 /*jslint browser: true, continue: true,
+  plusplus: true,
   white: true
  */
-/*global alert, console */
-(function(){
+/*global alert, console, m */
+
+window.addEventListener('load', function () {
     "use strict";
-    window.addEventListener('load', function(){
-        console.log('loaded');
-    });
-}());
+    console.log('loaded');
+        
+    //カウンター
+    var counter = 0;
+
+    //タイマーでカウントアップ
+    setInterval(function () {
+        counter++;
+        m.redraw(true);
+    }, 1000);
+
+    //ビュー
+    function view() {
+        return 'count: ' + counter;
+    }
+
+    //HTML要素にコンポーネントをマウント
+    m.mount(document.body, { view: view });
+
+});
