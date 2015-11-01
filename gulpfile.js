@@ -40,9 +40,8 @@ gulp.task("server", function() {
 // html
 //
 gulp.task("html", function(){
-
     gulp.src("src/**/*.html")
-        .pipe($.plumber())    
+        .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe(gulp.dest("out"))
         .pipe(browser.reload({stream:true}))
         ;
@@ -57,7 +56,7 @@ var autoprefixer = require("gulp-autoprefixer");
 var frontnote = require("gulp-frontnote");
 gulp.task("sass", function() {
     gulp.src("src/sass/**/*scss")
-        .pipe($.plumber())    
+        .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe(frontnote({
             css: '../out/css/style.css'
         }))
@@ -74,7 +73,7 @@ gulp.task("sass", function() {
 var uglify = require("gulp-uglify");
 gulp.task("js", function() {
     gulp.src(["src/js/**/*.js","!src/js/min/**/*.js"])
-        .pipe($.plumber())
+        .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe($.jslint({           
         }))
         .on('error', function (error) {
