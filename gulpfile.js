@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var merge = require('merge2');
+var browser = require('browser-sync');
 var $ = require('gulp-load-plugins')();
 
 var config = {
@@ -23,7 +25,22 @@ gulp.task('fonts', function() {
 //
 // server
 //
-var browser = require('browser-sync');
+gulp.task('nodemon', function(cb) {
+    $.nodemon({script: './src/ts/compiled/app.js'})
+    .on('start', function() {
+        cb();
+    })
+    .on('restart', function() {
+        console.log('nodemon restarted!');
+    });
+});
+gulp.task('jsserver', ['nodemon'], function() {
+    browser.init(null, {
+        proxy: 'http://localhost:7000',
+        port: 3000
+    });
+});
+
 gulp.task('server', function() {
     browser({
         server: {
@@ -82,9 +99,40 @@ gulp.task('bowercss', function() {
 });
 
 //
+// ts
+//
+gulp.task('tsc', function(){
+    var tsResult = gulp.src(['src/ts/**/*.ts', '!src/ts/definitions/**/*.ts'])
+        .pipe($.typescript({
+            //declaration: true,
+            noExternalResolve: true,
+            //module: 'commonjs',
+            sortOutput: true,
+            noImplicitAny: true,
+            noLib: false,            
+            removeComments: true,
+            target: "ES5"                         
+        }));
+ 
+    tsResult.js
+        .pipe($.concat('app.js'))        
+        .pipe(gulp.dest('src/ts/compiled'))
+        ;
+ /*
+    return merge([
+        tsResult.dts
+            .pipe(gulp.dest('src/ts/definitions')),
+        tsResult.js
+            .pipe($.concat('output.js'))        
+            .pipe(gulp.dest('src/ts/compiled'))
+    ]);
+    */       
+});
+
+//
 // user js
 //
-gulp.task('js', function() {
+gulp.task('js', ['tsc'], function() {
     gulp.src(['src/js/**/*.js','!src/js/min/**/*.js'])
         .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe($.jslint({           

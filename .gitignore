@@ -2,3 +2,6 @@ node_modules
 bower_components
 out
 guide
+src/ts/typings
+src/ts/definitions
+src/ts/compiled
