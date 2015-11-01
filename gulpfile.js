@@ -20,14 +20,14 @@ var tsConfig = require(config.serverSourceDir + '/tsconfig.json');
 //
 // initilaize
 //
-gulp.task('tsd', function () {
+gulp.task('tsd', function (cb) {
     return $.tsd({
         'command': 'reinstall',
         'latest': true,
         'config': config.serverSourceDir + '/tsd.json',
         'opts': {
         }
-    });
+    }, cb);
 });
 gulp.task('bower', function () {
     return $.bower({
