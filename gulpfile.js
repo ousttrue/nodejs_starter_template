@@ -40,19 +40,26 @@ gulp.task('init', ['tsd', 'bower'], function () {
 //
 // server
 //
-gulp.task('nodemon', ['tsc'], function (cb) {
+gulp.task('nodemon', ['tsc'], function () {
     $.nodemon({
-            cwd: config.serverBuildDir,        
-            script: './app.js' 
-        })
+        //cwd: config.serverBuildDir,
+        script: config.serverBuildDir + '/app.js', 
+        //ext: 'js', // 監視するファイルの拡張子
+        //ignore: [config.clientBuildDir]
+        env:{
+            client_dir: config.clientBuildDir
+        }
+    })
         .on('start', function () {
-            cb();
         })
         .on('restart', function () {
             console.log('nodemon restarted!');
-        });
+            browser.reload();         
+        })
+        .on('change')
+    ;
 });
-gulp.task('jsserver', ['nodemon'], function () {
+gulp.task('server', ['nodemon'], function () {
     browser.init(null, {
         proxy: 'http://localhost:7000',
         port: 3000
@@ -83,17 +90,6 @@ gulp.task('tsc', function () {
                .pipe(gulp.dest('src/ts/compiled'))
        ]);
        */
-});
-
-//
-// static files
-//
-gulp.task('server', function () {
-    browser({
-        server: {
-            baseDir: config.clientBuildDir
-        }
-    });
 });
 
 //
@@ -204,6 +200,9 @@ gulp.task('watch', ['server'], function () {
         config.clientSourceDir + '/js/**/*.js', 
         //'!'+config.clientSourceDir + '/js/min/**/*.js'
     ], ['js']);
+    gulp.watch(
+        config.serverSourceDir + '/**/*.ts',
+        ['tsc']);
 });
 
 // default

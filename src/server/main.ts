@@ -7,7 +7,7 @@ var http = require('http');
 var port: number=process.env.port || 7000;
 console.log('listen port: '+port);
 
-var file = new nodeStatic.Server('./client');
+var file = new nodeStatic.Server(process.env.client_dir || './client');
 http.createServer((request: any, response: any) => {
 
     var hello = new Hello();
