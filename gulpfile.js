@@ -15,6 +15,7 @@ var bower_js_list = [
     config.bowerDir + '/jquery/dist/jquery.js',
     config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js'
 ];
+var tsConfig = require(config.serverSourceDir + '/tsconfig.json');
 
 //
 // server
@@ -43,11 +44,8 @@ gulp.task('tsc', function () {
         config.serverSourceDir + '/**/*.ts',
         '!' + config.serverSourceDir + '!/definitions/**/*.ts'
     ])
-        .pipe($.typescript({
-            sortOutput: true,
-            removeComments: true,
-            target: "ES5"
-        }));
+        .pipe($.typescript(tsConfig.compilerOptions))    
+        ;
 
     return tsResult.js
         .pipe($.concat('app.js'))
