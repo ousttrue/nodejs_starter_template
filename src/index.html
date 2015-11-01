@@ -8,7 +8,8 @@
     <meta name="keywords" content="" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/min/index.js"></script>
+    <script src="js/all.min.js"></script>
+    <script src="js/index.js"></script>
 </head>
 
 <body>
@@ -117,23 +118,43 @@
         </div>
     </div>
 
+    <!--タブ-->
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Messages</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab">Home</a></li>
+        <li><a href="#tab2" data-toggle="tab">Profile</a></li>
+        <li><a href="#tab3" data-toggle="tab">Messages</a></li>
     </ul>
 
     <ul class="nav nav-pills">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Messages</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab">Home</a></li>
+        <li><a href="#tab2" data-toggle="tab">Profile</a></li>
+        <li><a href="#tab3" data-toggle="tab">Messages</a></li>
     </ul>
 
     <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Messages</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab">Home</a></li>
+        <li><a href="#tab2" data-toggle="tab">Profile</a></li>
+        <li><a href="#tab3" data-toggle="tab">Messages</a></li>
     </ul>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">タブ1</a></li>
+        <li><a href="#tab2" data-toggle="tab">タブ2</a></li>
+    </ul>
+    
+    <!-- / タブ-->
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="tab1">
+            <p>コンテンツ1</p>
+        </div>
+        <div class="tab-pane fade" id="tab2">
+            <p>コンテンツ2</p>
+        </div>
+        <div class="tab-pane fade" id="tab3">
+            <p>コンテンツ2</p>
+        </div>
+    </div>
+
 </body>
 
 </html>

@@ -1,23 +1,19 @@
-var gulp = require("gulp");
+var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
 var config = {
     sassPath: './src/sass',
     bowerDir: './bower_components'
 };
-
-//
-// bower
-//
-gulp.task('bower', function() {
-    return $.bower()
-        .pipe(gulp.dest(config.bowerDir))
-});
+var bower_js_list=[
+    config.bowerDir + '/jquery/dist/jquery.js',
+    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js'
+];
 
 //
 // icons
 //
-gulp.task('icons', function() {
+gulp.task('fonts', function() {
     return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
         .pipe(gulp.dest('out/fonts'))
         .pipe(browser.reload({stream:true}))
@@ -27,11 +23,11 @@ gulp.task('icons', function() {
 //
 // server
 //
-var browser = require("browser-sync");
-gulp.task("server", function() {
+var browser = require('browser-sync');
+gulp.task('server', function() {
     browser({
         server: {
-            baseDir: "./out"
+            baseDir: './out'
         }
     });
 });
@@ -39,10 +35,10 @@ gulp.task("server", function() {
 //
 // html
 //
-gulp.task("html", function(){
-    gulp.src("src/**/*.html")
+gulp.task('html', function(){
+    gulp.src('src/**/*.html')
         .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
-        .pipe(gulp.dest("out"))
+        .pipe(gulp.dest('out'))
         .pipe(browser.reload({stream:true}))
         ;
     
@@ -66,8 +62,8 @@ gulp.task('css', function() {
             ]
         })
             /*
-            .on("error", $.notify.onError(function (error) {
-                return "Error: " + error.message;
+            .on('error', $.notify.onError(function (error) {
+                return 'Error: ' + error.message;
             }))
             */
         )
@@ -78,10 +74,10 @@ gulp.task('css', function() {
 });
 
 //
-// js
+// user js
 //
-gulp.task("js", function() {
-    gulp.src(["src/js/**/*.js","!src/js/min/**/*.js"])
+gulp.task('js', function() {
+    gulp.src(['src/js/**/*.js','!src/js/min/**/*.js'])
         .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe($.jslint({           
         }))
@@ -89,18 +85,31 @@ gulp.task("js", function() {
             console.error(String(error));
         })        
         .pipe($.uglify())
-        .pipe(gulp.dest("out/js/min"))
+        .pipe(gulp.dest('out/js'))
         .pipe(browser.reload({stream:true}))
         ;
 });
 
 //
-// watch
+// bower js
 //
-gulp.task("watch", ['server'], function() {
-    gulp.watch(["src/js/**/*.js","!src/js/min/**/*.js"],["js"]);
-    gulp.watch("src/sass/**/*.scss",["css"]);
-    gulp.watch("src/*.html",["html"]);
+gulp.task('bowerjs', function(){
+  gulp.src(bower_js_list)
+    .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
+    //.pipe($.uglify())
+    .pipe($.concat('all.min.js'))
+    .pipe(gulp.dest('out/js'))
+    ;
 });
 
-gulp.task('default', ['bower', 'icons', 'css']);
+//
+// watch
+//
+gulp.task('watch', ['server'], function() {
+    gulp.watch(['src/js/**/*.js','!src/js/min/**/*.js'],['js']);
+    gulp.watch('src/sass/**/*.scss',['css']);
+    gulp.watch('src/*.html',['html']);
+});
+
+// default
+gulp.task('default', ['html', 'js', 'bowerjs', 'fonts', 'css']);
