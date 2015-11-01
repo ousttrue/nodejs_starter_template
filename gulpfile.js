@@ -21,10 +21,18 @@ var tsConfig = require(config.serverSourceDir + '/tsconfig.json');
 // initilaize
 //
 gulp.task('tsd', function () {
-    return gulp.src(config.serverSourceDir + '/gulp_tsd.json').pipe($.tsd());
+    return $.tsd({
+        'command': 'reinstall',
+        'latest': true,
+        'config': config.serverSourceDir + '/tsd.json',
+        'opts': {
+        }
+    });
 });
 gulp.task('bower', function () {
-    return $.bower({ cwd: config.clientSourceDir});
+    return $.bower({
+        cwd: config.clientSourceDir
+    });
 });
 gulp.task('init', ['tsd', 'bower'], function () {
 });
