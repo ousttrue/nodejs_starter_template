@@ -45,14 +45,30 @@ gulp.task('html', function(){
 });
 
 //
-// sass
+// user css
 //
 gulp.task('css', function() {
-    return gulp.src(config.sassPath + '/**/*scss')
+    return gulp.src([config.sassPath + '/**/*.scss', '!'+config.sassPath + '/all.scss'])
         .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe($.frontnote({
             css: '../out/css/style.css'
         }))
+        .pipe($.sass({
+            //outputStyle: 'compressed',
+        })
+        )
+        .pipe($.autoprefixer())
+        .pipe(gulp.dest('./out/css'))
+        .pipe(browser.reload({stream:true}))
+        ;
+});
+
+//
+// bower css
+//
+gulp.task('bowercss', function() {
+    return gulp.src(config.sassPath + '/all.scss')
+        .pipe($.plumber({errorHandler: $.notify.onError('<%= error.message %>')}))
         .pipe($.sass({
             //outputStyle: 'compressed',
             includePaths: [
@@ -60,15 +76,8 @@ gulp.task('css', function() {
                 config.bowerDir + '/font-awesome/scss',
             ]
         })
-            /*
-            .on('error', $.notify.onError(function (error) {
-                return 'Error: ' + error.message;
-            }))
-            */
         )
-        .pipe($.autoprefixer())
         .pipe(gulp.dest('./out/css'))
-        .pipe(browser.reload({stream:true}))
         ;
 });
 
@@ -106,9 +115,10 @@ gulp.task('bowerjs', function(){
 //
 gulp.task('watch', ['server'], function() {
     gulp.watch(['src/js/**/*.js','!src/js/min/**/*.js'],['js']);
-    gulp.watch('src/sass/**/*.scss',['css']);
+    gulp.watch(['src/sass/**/*.scss', '!src/sass/all.scss'],['css']);
     gulp.watch('src/*.html',['html']);
 });
 
 // default
-gulp.task('default', ['html', 'js', 'bowerjs', 'fonts', 'css']);
+gulp.task('default', ['bowerjs', 'bowercss', 'fonts', 
+    'html', 'js', 'css']);
