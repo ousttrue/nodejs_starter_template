@@ -1,9 +1,7 @@
 ///<reference path="./typings/node/node.d.ts"/>
-//declare function require(x: string): any;
-
 var http = require('http');
 var port=process.env.port || 7000;
-console.log(port);
+console.log('listen port: '+port);
 
 http.createServer((request: any, response: any) => {
 

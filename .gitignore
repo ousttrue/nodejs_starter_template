@@ -1,7 +1,6 @@
 node_modules
-bower_components
-out
+build
 guide
-src/ts/typings
-src/ts/definitions
-src/ts/compiled
+/src/client/bower_components
+/src/server/typings
+/src/server/definitions
