@@ -18,6 +18,18 @@ var bower_js_list = [
 var tsConfig = require(config.serverSourceDir + '/tsconfig.json');
 
 //
+// initilaize
+//
+gulp.task('tsd', function () {
+    return gulp.src(config.serverSourceDir + '/gulp_tsd.json').pipe($.tsd());
+});
+gulp.task('bower', function () {
+    return $.bower({ cwd: config.clientSourceDir});
+});
+gulp.task('init', ['tsd', 'bower'], function () {
+});
+
+//
 // server
 //
 gulp.task('nodemon', function (cb) {
@@ -44,13 +56,13 @@ gulp.task('tsc', function () {
         config.serverSourceDir + '/**/*.ts',
         '!' + config.serverSourceDir + '!/definitions/**/*.ts'
     ])
-        .pipe($.typescript(tsConfig.compilerOptions))    
+        .pipe($.typescript(tsConfig.compilerOptions))
         ;
 
     return tsResult.js
         .pipe($.concat('app.js'))
         .pipe(gulp.dest(config.serverBuildDir))
-    ;
+        ;
     /*
        return merge([
            tsResult.dts
