@@ -1,10 +1,10 @@
 /*jslint browser: true, continue: true,
   white: true
  */
-/*global alert */
+/*global alert, console */
 (function(){
     "use strict";
     window.addEventListener('load', function(){
-        alert('loaded');
+        console.log('loaded');
     });
 }());

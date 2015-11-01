@@ -1,15 +1,139 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title></title>
     <meta name="description" content="">
-    <meta name="keywords" content=""/>
+    <meta name="keywords" content="" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/min/index.js"></script>
 </head>
+
 <body>
     <h1>Gulp入門</h1>
+
+    <button type="button" class="btn btn-default">Default</button>
+    <button type="button" class="btn btn-primary">Primary</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-link">Link</button>
+
+    <p>
+        <button type="button" class="btn btn-primary btn-lg">Large button</button>
+        <button type="button" class="btn btn-default btn-lg">Large button</button>
+    </p>
+    <p>
+        <button type="button" class="btn btn-primary">Default button</button>
+        <button type="button" class="btn btn-default">Default button</button>
+    </p>
+    <p>
+        <button type="button" class="btn btn-primary btn-sm">Small button</button>
+        <button type="button" class="btn btn-default btn-sm">Small button</button>
+    </p>
+    <p>
+        <button type="button" class="btn btn-primary btn-xs">Extra small button</button>
+        <button type="button" class="btn btn-default btn-xs">Extra small button</button>
+    </p>
+    <div>
+        <p class="bg-primary">HTML5</p>
+        <p class="bg-success">CSS3
+        </p>
+        <p class="bg-info">JavaScript</p>
+        <p class="bg-warning">jQuery</p>
+        <p class="bg-danger">Bootstrap</p>
+    </div>
+
+    <header style="background-color: #777;" class="container">ヘッダー</header>
+    <section class="container">
+        <!-- Bootstrapのグリッドシステムclass="row"で開始 -->
+        <div class="row">
+            <!-- グリッドシステムとは：合計12分割 -->
+            <div class="col-sm-3" style="background-color: blue;">青</div>
+            <div class="col-sm-6" style="background-color: red;">赤</div>
+            <div class="col-sm-3" style="background-color: yellow;">黄色</div>
+        </div>
+    </section>
+    <footer style="background-color: #777;" class="container">フッター</footer>
+
+    <section class="container">
+        <!-- TwitterBootstrapのグリッドシステムclass="row"で開始 -->
+        <div class="row">
+            <!-- グリッドシステムとは：合計12分割 -->
+            <div class="col-xs-6 col-sm-4 col-md-2" style="background-color: blue;">青色1</div>
+            <div class="col-xs-6 col-sm-4 col-md-2" style="background-color: red;">赤色1</div>
+            <div class="col-xs-6 col-sm-4 col-md-2" style="background-color: yellow;">黄色1</div>
+            <div class="col-xs-6 col-sm-4 col-md-2" style="background-color: blue;">青色2</div>
+            <div class="col-xs-6 col-sm-4 col-md-2" style="background-color: red;">赤色2</div>
+            <div class="col-xs-6 col-sm-4 col-md-2" style="background-color: yellow;">黄色2</div>
+        </div>
+    </section>
+
+    <section class="container">
+        <!-- TwitterBootstrapのグリッドシステムclass="row"で開始 -->
+        <div class="row">
+            <!-- グリッドシステムとは：合計12分割 -->
+            <div class="col-sm-2 hidden-xs" style="background-color: #269abc;">xs以外で非表示</div>
+            <div class="col-sm-7 hidden-sm" style="background-color: #c7254e;">sm以外で非表示</div>
+            <div class="col-sm-3" style="background-color: #eb9316;">all表示</div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="active">
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr class="success">
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Messages</a></li>
+    </ul>
+
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Messages</a></li>
+    </ul>
+
+    <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Messages</a></li>
+    </ul>
 </body>
+
 </html>
