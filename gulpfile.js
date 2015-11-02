@@ -99,6 +99,8 @@ gulp.task('tsc', function () {
 gulp.task('html', function () {
     return gulp.src(config.clientSourceDir + '/**/*.html')
         .pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
+        .pipe($.htmlhint())
+        .pipe($.htmlhint.reporter())        
         .pipe(gulp.dest(config.clientBuildDir))
         .pipe(browser.reload({ stream: true }))
         ;
