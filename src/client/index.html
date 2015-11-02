@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html dir="ltr" prefix="fb: http://www.facebook.com/2008/fbml">
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<script src="js/all.min.js"></script>
-<script src="js/index.js"></script>
+	<meta charset="UTF-8">
+	<title>SPA</title>
+
+	<link rel="stylesheet" href="css/spa.css">
+	<link rel="stylesheet" href="css/spa.shell.css">
+
+	<script src="js/all.min.js"></script>
+
+	<script src="js/spa.js"></script>
+	<script src="js/spa.shell.js"></script>
+	<script>
+		$(function(){ spa.initModule( $('#spa')); });
+	</script>
 </head>
+
 <body>
-<div id="contents"></div>
+	<div id="spa"></div>
 </body>
+
 </html>
