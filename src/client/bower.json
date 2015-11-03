@@ -20,6 +20,9 @@
     "font-awesome": "fontawesome#~4.4.0",
     "jquery": "~2.1.4",
     "mithril": "~0.2.0",
-    "jquery.uriAnchor": "mmikowski/urianchor"
+    "jquery.uriAnchor": "mmikowski/urianchor",
+    "jquery.event.ue": "mmikowski/jquery.event.ue",
+    "jquery.event.gevent": "mmikowski/jquery.event.gevent",
+    "taffydb": "*"
   }
 }
