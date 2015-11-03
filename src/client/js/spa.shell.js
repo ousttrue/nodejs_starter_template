@@ -113,6 +113,7 @@ spa.shell = (function () {
 			$.uriAnchor.setAnchor(anchor_map_previous, null, true);
 			return false;
 		}
+		console.log('anchor_map_proposed');
 		console.log(anchor_map_proposed);
 		stateMap.anchor_map = anchor_map_proposed;
 
