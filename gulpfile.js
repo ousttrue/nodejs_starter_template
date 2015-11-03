@@ -178,7 +178,7 @@ gulp.task('js', function () {
         .on('error', function (error) {
             console.error(String(error));
         })
-        .pipe($.uglify())
+        //.pipe($.uglify())
         .pipe(gulp.dest(config.clientBuildDir + '/js'))
         .pipe(browser.reload({ stream: true }))
         ;
@@ -194,10 +194,10 @@ gulp.task('bowerjs', function () {
             bowerJson: config.clientSourceDir + '/bower.json'
         }
     }))
-        .pipe($.filter('*.js'))
+        .pipe($.filter(config.bowerDir + '/**/*.js'))
         .pipe($.concat('all.min.js'))
         .pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
-        .pipe($.uglify())
+        //.pipe($.uglify())
         .pipe(gulp.dest(config.clientBuildDir + '/js'))
         .pipe(browser.reload({ stream: true }))
         ;
