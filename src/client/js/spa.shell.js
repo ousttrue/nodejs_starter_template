@@ -25,17 +25,20 @@ spa.shell = (function () {
 		chat_extend_height: 450,
 		chat_retract_height: 15,
 		chat_extended_title: 'Click to retract',
-		chat_retracted_title: 'Click to extend'
+		chat_retracted_title: 'Click to extend',
+
+		resize_interval: 200
 	},
 		stateMap = {
 			$container: null,
 			anchor_map: {},
-			is_chat_retracted: true
+			is_chat_retracted: true,
+			resize_idto: undefined
 		},
 		jqueryMap = {},
 
 		copyAnchorMap, setJqueryMap,
-		changeAnchorPart, onHashchange,
+		changeAnchorPart, onHashchange, onResize,
 		setChatAnchor, initModule;
 		
 	//
@@ -98,7 +101,7 @@ spa.shell = (function () {
 	//
 	onHashchange = function (/*event*/) {
 		var
-			is_ok=true,
+			is_ok = true,
 			anchor_map_previous = copyAnchorMap(),
 			anchor_map_proposed,
 			_s_chat_previous, _s_chat_proposed,
@@ -114,22 +117,22 @@ spa.shell = (function () {
 		stateMap.anchor_map = anchor_map_proposed;
 
 		_s_chat_previous = anchor_map_previous._s_chat;
-		console.log('_s_chat_previous: '+_s_chat_previous);
+		console.log('_s_chat_previous: ' + _s_chat_previous);
 		_s_chat_proposed = anchor_map_proposed._s_chat;
-		console.log('_s_chat_proposed: '+_s_chat_proposed);
+		console.log('_s_chat_proposed: ' + _s_chat_proposed);
 
 		if (!anchor_map_previous // first time
 			|| _s_chat_previous !== _s_chat_proposed // or changed
 			) {
 			s_chat_proposed = anchor_map_proposed.chat;
-			console.log('s_chat_proposed: '+s_chat_proposed);
+			console.log('s_chat_proposed: ' + s_chat_proposed);
 			switch (s_chat_proposed) {
 				case 'opened':
-					is_ok=spa.chat.setSliderPosition('opened');
+					is_ok = spa.chat.setSliderPosition('opened');
 					break;
 
 				case 'closed':
-					is_ok=spa.chat.setSliderPosition('closed');
+					is_ok = spa.chat.setSliderPosition('closed');
 					break;
 
 				default:
@@ -138,14 +141,14 @@ spa.shell = (function () {
 					$.uriAnchor.setAnchor(anchor_map_proposed, null, true);
 			}
 		}
-		
-		if(!is_ok){
-			if(anchor_map_previous){
+
+		if (!is_ok) {
+			if (anchor_map_previous) {
 				// restore
 				$.uriAnchor.setAnchor(anchor_map_previous, null, true);
-				stateMap.annchor_map=anchor_map_previous;
+				stateMap.annchor_map = anchor_map_previous;
 			}
-			else{
+			else {
 				// default
 				delete anchor_map_proposed.chat;
 				$.uriAnchor.setAnchor(anchor_map_previous, null, true);
@@ -155,11 +158,26 @@ spa.shell = (function () {
 		return false;
 	};
 
+	onResize = function (event) {
+		if (stateMap.resize_idto) { return true; }
+
+		console.log("onResize");
+		console.log(event);
+		
+		spa.chat.handleResize();
+		stateMap.resize_idto = setTimeout(
+			function () { stateMap.resize_idto = undefined; },
+			configMap.resize_interval
+			);
+
+		return true;
+	};
+
 	//
 	// callback
 	//
-	setChatAnchor=function(position_type){
-		return changeAnchorPart({chat: position_type});	
+	setChatAnchor = function (position_type) {
+		return changeAnchorPart({ chat: position_type });
 	};
 	
 	//
@@ -173,17 +191,18 @@ spa.shell = (function () {
 		$.uriAnchor.configModule({
 			schema_map: configMap.anchor_schema_map
 		});
-		
+
 		spa.chat.configModule({
 			set_chat_anchor: setChatAnchor,
 			chat_model: spa.model.chat,
 			people_model: spa.model.people
 		});
 		spa.chat.initModule(jqueryMap.$container);
-		
+
 		$(window)
-		.bind('hashchange', onHashchange)
-		.trigger('hashchange');
+			.bind('resize', onResize)
+			.bind('hashchange', onHashchange)
+			.trigger('hashchange');
 	};
 
 	return { initModule: initModule };

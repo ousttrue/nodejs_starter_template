@@ -35,10 +35,12 @@ spa.chat = (function () {
 
 			slider_open_time: 250,
 			slider_close_time: 250,
-			slider_opened_em: 16,
+			slider_opened_em: 18,
 			slider_closed_em: 2,
 			slider_opened_title: 'Click to close',
 			slider_closed_title: 'Click to open',
+			slider_opened_min_em: 10,
+			window_height_min_em: 20,
 
 			chat_model: null,
 			people_model: null,
@@ -55,7 +57,8 @@ spa.chat = (function () {
 		jqueryMap = {},
 
 		setJqueryMap, getEmSize, setPxSizes, setSliderPosition,
-		onClickToggle, configModule, initModule
+		onClickToggle, configModule, initModule,
+		removeSlider, handleResize
 		;
 	
 	//
@@ -87,10 +90,16 @@ spa.chat = (function () {
 	};
 
 	setPxSizes = function () {
-		var px_per_em, opened_height_em;
+		var px_per_em, window_height_em, opened_height_em;
 		px_per_em = getEmSize(jqueryMap.$slider.get(0));
+		window_height_em = Math.floor(
+			($(window).height() / px_per_em) + 0.5
+			);
 
-		opened_height_em = configMap.slider_opened_em;
+		opened_height_em = window_height_em > configMap.window_height_min_em
+			? configMap.slider_opened_em
+			: configMap.slider_opened_min_em
+		;
 
 		stateMap.px_per_em = px_per_em;
 		stateMap.slider_closed_px = configMap.slider_closed_em * px_per_em;
@@ -106,59 +115,59 @@ spa.chat = (function () {
 	setSliderPosition = function (position_type, callback) {
 		var
 			height_px, animate_time, slider_title, toggle_text;
-			
-		if(stateMap.position_type===position_type){
+
+		if (stateMap.position_type === position_type) {
 			return true;
 		}
-		
-		switch(position_type){
+
+		switch (position_type) {
 			case 'opened':
-			height_px=stateMap.slider_opened_px;
-			animate_time=configMap.slider_open_time;
-			slider_title=configMap.slider_opened_title;
-			toggle_text='=';
-			break;
-			
+				height_px = stateMap.slider_opened_px;
+				animate_time = configMap.slider_open_time;
+				slider_title = configMap.slider_opened_title;
+				toggle_text = '=';
+				break;
+
 			case 'hidden':
-			height_px=0;
-			animate_time=configMap.slider_open_time;
-			slider_title='';
-			toggle_text='+';
-			break;
-			
+				height_px = 0;
+				animate_time = configMap.slider_open_time;
+				slider_title = '';
+				toggle_text = '+';
+				break;
+
 			case 'closed':
-			height_px=stateMap.slider_closed_px;
-			animate_time=configMap.slider_close_time;
-			slider_title=configMap.slider_closed_title;
-			toggle_text='+';
-			break;
-			
+				height_px = stateMap.slider_closed_px;
+				animate_time = configMap.slider_close_time;
+				slider_title = configMap.slider_closed_title;
+				toggle_text = '+';
+				break;
+
 			default: return false;
 		}
-		
-		stateMap.position_type='';
+
+		stateMap.position_type = '';
 		jqueryMap.$slider.animate(
-			{height: height_px},
+			{ height: height_px },
 			animate_time,
-			function(){
+			function () {
 				jqueryMap.$toggle.prop('title', slider_title);
 				jqueryMap.$toggle.text(toggle_text);
-				stateMap.position_type=position_type;
-				if(callback){ callback(jqueryMap.$slider); }
+				stateMap.position_type = position_type;
+				if (callback) { callback(jqueryMap.$slider); }
 			}
-		);
+			);
 		return true;
 	};
 	
 	//
 	// event
 	//
-	onClickToggle=function(/*event*/){
-		var set_chat_anchor=configMap.set_chat_anchor;
-		if(stateMap.position_type==='opened'){
+	onClickToggle = function (/*event*/) {
+		var set_chat_anchor = configMap.set_chat_anchor;
+		if (stateMap.position_type === 'opened') {
 			set_chat_anchor('closed');
 		}
-		else{
+		else {
 			set_chat_anchor('opened');
 		}
 		return false;
@@ -181,17 +190,43 @@ spa.chat = (function () {
 		stateMap.$append_target = $append_target;
 		setJqueryMap();
 		setPxSizes();
-		
+
 		jqueryMap.$toggle.prop('title', configMap.slider_closed_title);
 		jqueryMap.$head.click(onClickToggle);
-		stateMap.position_type='closed';
-		
+		stateMap.position_type = 'closed';
+
 		return true;
 	};
 
+	removeSlider = function () {
+		if (jqueryMap.$slider) {
+			jqueryMap.$slider.remove();
+			jqueryMap = {};
+		}
+		stateMap.$append_target = null;
+		stateMap.position_type = 'closed';
+
+		configMap.chat_model = null;
+		configMap.people_model = null;
+		configMap.set_chat_anchor = null;
+		return true;
+	};
+
+	handleResize = function () {
+		if(!jqueryMap.$slider){return false;}
+		
+		setPxSizes();
+		if(stateMap.position_type==='opened'){
+			jqueryMap.$slider.css({height: stateMap.slider_opened_px});
+		}
+		return true;
+	};
+	
 	return {
 		setSliderPosition: setSliderPosition,
 		configModule: configModule,
-		initModule: initModule
+		initModule: initModule,
+		removeSlider: removeSlider,
+		handleResize: handleResize
 	};
 } ());
