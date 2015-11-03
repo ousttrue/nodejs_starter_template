@@ -173,7 +173,8 @@ gulp.task('js', function () {
             regexp: true,
             sloppy: true,
             vars: false,
-            white: true
+            white: true,
+            unparam: true
         }))
         .on('error', function (error) {
             console.error(String(error));

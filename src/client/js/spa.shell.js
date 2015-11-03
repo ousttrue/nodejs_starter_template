@@ -1,5 +1,6 @@
 /*global $, spa */
 spa.shell = (function () {
+	'use strict';
 
 	var configMap = {
 		anchor_schema_map: {
@@ -8,9 +9,11 @@ spa.shell = (function () {
 		main_html: String()
 		+ '<div id="spa">'
 		+ '    <div class="spa-shell-head">'
-		+ '        <div class="spa-shell-head-logo"></div>'
+		+ '        <div class="spa-shell-head-logo">'
+		+ '          <h1>SPA</h1>'
+		+ '          <p>javascript end to end</p>'
+		+ '        </div>'
 		+ '        <div class="spa-shell-head-acct"></div>'
-		+ '        <div class="spa-shell-head-search"></div>'
 		+ '    </div>'
 		+ '    <div class="spa-shell-main">'
 		+ '        <div class="spa-shell-main-nav"></div>'
@@ -37,8 +40,10 @@ spa.shell = (function () {
 		},
 		jqueryMap = {},
 
+		onHashchange, onResize,
+		onTapAcct, onLogin, onLogout,
 		copyAnchorMap, setJqueryMap,
-		changeAnchorPart, onHashchange, onResize,
+		changeAnchorPart,
 		setChatAnchor, initModule;
 		
 	//
@@ -92,7 +97,8 @@ spa.shell = (function () {
 		var $container = stateMap.$container;
 		jqueryMap = {
 			$container: $container,
-			$chat: $container.find('.spa-shell-chat')
+			$acct: $container.find('.spa-shell-head-acct'),
+			$nav: $container.find('.spa-shell-main-nav')
 		};
 	};
 
@@ -164,7 +170,7 @@ spa.shell = (function () {
 
 		console.log("onResize");
 		console.log(event);
-		
+
 		spa.chat.handleResize();
 		stateMap.resize_idto = setTimeout(
 			function () { stateMap.resize_idto = undefined; },
@@ -172,6 +178,27 @@ spa.shell = (function () {
 			);
 
 		return true;
+	};
+
+	onTapAcct = function (event) {
+		var user_name, user = spa.model.people.get_user();
+		if (user.get_is_anon()) {
+			user_name = prompt('Please sign-in');
+			spa.model.people.login(user_name);
+			jqueryMap.$acct.text('... processing ....');
+		}
+		else {
+			spa.model.people.logout();
+		}
+		return false;
+	};
+
+	onLogin = function (event, login_user) {
+		jqueryMap.$acct.text(login_user.name);
+	};
+
+	onLogout = function (event, logout_user) {
+		jqueryMap.$acct.text('Please sign-in');
 	};
 
 	//
@@ -189,10 +216,12 @@ spa.shell = (function () {
 		$container.html(configMap.main_html);
 		setJqueryMap();
 
+		// initialize anchor
 		$.uriAnchor.configModule({
 			schema_map: configMap.anchor_schema_map
 		});
 
+		// initialize spa.chat
 		spa.chat.configModule({
 			set_chat_anchor: setChatAnchor,
 			chat_model: spa.model.chat,
@@ -200,10 +229,18 @@ spa.shell = (function () {
 		});
 		spa.chat.initModule(jqueryMap.$container);
 
+		// initialize window event
 		$(window)
 			.bind('resize', onResize)
 			.bind('hashchange', onHashchange)
 			.trigger('hashchange');
+
+		// initialize login, logout			
+		$.gevent.subscribe($container, 'spa-login', onLogin);
+		$.gevent.subscribe($container, 'spa-logout', onLogout);
+		jqueryMap.$acct
+			.text('Please sign-in')
+			.bind('utap', onTapAcct);
 	};
 
 	return { initModule: initModule };
