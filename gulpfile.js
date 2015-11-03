@@ -97,7 +97,7 @@ gulp.task('tsc', function () {
 // html
 //
 gulp.task('html', function () {
-    return gulp.src(config.clientSourceDir + '/**/*.html')
+    return gulp.src(config.clientSourceDir + '/*.html')
         .pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
         .pipe($.htmlhint())
         .pipe($.htmlhint.reporter())        
@@ -188,16 +188,20 @@ gulp.task('js', function () {
 // bower js
 //
 gulp.task('bowerjs', function () {
-    return gulp.src(mainBowerFiles({
+    var files=mainBowerFiles({
         paths: {
             bowerDirectory: config.bowerDir,
             bowerJson: config.clientSourceDir + '/bower.json'
         }
-    }))
-        .pipe($.filter(config.bowerDir + '/**/*.js'))
-        .pipe($.concat('all.min.js'))
+    });
+    files.push(config.bowerDir+'/taffydb/taffy.js');
+    
+    return gulp.src(files)
         .pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
+        .pipe($.filter('*.js'))
+        .pipe($.debug({title: 'bowerjs files:'}))
         //.pipe($.uglify())
+        .pipe($.concat('all.min.js'))
         .pipe(gulp.dest(config.clientBuildDir + '/js'))
         .pipe(browser.reload({ stream: true }))
         ;
